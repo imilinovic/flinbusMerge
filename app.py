@@ -46,7 +46,7 @@ def register():
 def login():
     params = LoginInput(**request.get_json())
 
-    matches: list[Profile] = db.filter(Profile, profileUsername=params.username)
+    matches: list[Profile] = db.filter(Profile, profileUsername=params.username, profilePasswordHash=params.passwordHash)
 
     if len(matches) != 1:
         return LoginResponse(success=False).dict()
