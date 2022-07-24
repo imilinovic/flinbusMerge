@@ -6,8 +6,9 @@ services:
         build: .
         network_mode: host
         environment:
-          - DB_HOST=localhost
-          - DB_USER=flinbus
-          - DB_PASSWORD=password
+          - POSTGRES_HOST=localhost
+          - POSTGRES_USER=flinbus
+          - POSTGRES_DB=flinbus
+          - POSTGRES_PASSWORD=31432014320143012343124654107
           - FLINBUSMERGE_HOST_ADDRESS=0.0.0.0:8080
           - FLINBUSML_URL=http://localhost:8081
