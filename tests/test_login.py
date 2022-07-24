@@ -1,5 +1,6 @@
 import requests
 
+import settings
 from api.input_params.login_input import LoginInput
 from api.input_params.register_input import RegisterInput
 
@@ -15,7 +16,7 @@ def run():
         passwordHash=passwordHash,
         username=username,
     )
-    res = requests.post("http://localhost:8000/api/register", json=payload.dict())
+    res = requests.post(f"{settings.FLINBUSMERGE_URL}/api/register", json=payload.dict())
 
     if not res.json()['success']:
         print("Registering failed!")
@@ -24,6 +25,6 @@ def run():
         username=username,
         passwordHash=passwordHash
     )
-    res = requests.post("http://localhost:8000/api/login", json=payload.dict())
+    res = requests.post(f"{settings.FLINBUSMERGE_URL}/api/login", json=payload.dict())
 
     print(res.json())

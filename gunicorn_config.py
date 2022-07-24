@@ -1,2 +1,5 @@
-bind = "0.0.0.0:8080"
+import settings
+
+
+bind = f"0.0.0.0:{settings.GUNICORN_PORT}"
 workers = 2

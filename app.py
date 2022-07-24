@@ -1,6 +1,8 @@
 import psycopg2
+import requests
 from flask import Flask, request
 
+import settings
 from api.input_params.image_input import ImageInput
 from api.input_params.login_input import LoginInput
 from api.input_params.register_input import RegisterInput
@@ -64,7 +66,7 @@ def image():
     if not validate_token(params.apiToken):
         return ImageResponse(success=False).dict()
 
-    # TODO: ML API call
-    received_image = "blablabase64"
+    res = requests.post(settings.FLINBUSML_URL + '/yolo', json={"img": params.image})
+    labeled_image = res.json()['img']
 
-    return ImageResponse(success=True, image=received_image).dict()
+    return ImageResponse(success=True, image=labeled_image).dict()

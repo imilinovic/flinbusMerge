@@ -3,6 +3,7 @@ import base64
 from io import BytesIO
 from PIL import Image
 
+import settings
 from api.input_params.image_input import ImageInput
 from api.input_params.login_input import LoginInput
 from api.input_params.register_input import RegisterInput
@@ -19,7 +20,7 @@ def run():
         passwordHash=passwordHash,
         username=username,
     )
-    res = requests.post("http://localhost:8000/api/register", json=payload.dict())
+    res = requests.post(f"{settings.FLINBUSMERGE_URL}/api/register", json=payload.dict())
 
     if not res.json()['success']:
         print("Registering failed!")
@@ -28,10 +29,11 @@ def run():
         username=username,
         passwordHash=passwordHash
     )
-    res = requests.post("http://localhost:8000/api/login", json=payload.dict())
+    res = requests.post(f"{settings.FLINBUSMERGE_URL}/api/login", json=payload.dict())
 
     token = res.json()['apiToken']
-    data = requests.get('https://i.pinimg.com/736x/5b/94/d2/5b94d271031dcae72caf4ed5e60943f1.jpg').content
+    data = requests.get('https://global.unitednations.entermediadb.net/assets/mediadb/services/module/asset/downloads/'
+                        'preset/assets/2014/06/19456/image1170x530cropped.jpg').content
 
     image = Image.open(BytesIO(data))
     buffered = BytesIO()
@@ -42,6 +44,6 @@ def run():
         apiToken=token,
         image=image_b64
     )
-    res = requests.post("http://localhost:8000/api/image", json=payload.dict())
+    res = requests.post(f"{settings.FLINBUSMERGE_URL}/api/image", json=payload.dict())
 
     print(res.json())
