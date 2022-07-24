@@ -1,0 +1,13 @@
+version: "3.4"
+
+
+services:
+    flinbusmerge:
+        build: .
+        network_mode: host
+        environment:
+          - DB_HOST=localhost
+          - DB_USER=flinbus
+          - DB_PASSWORD=password
+          - FLINBUSMERGE_HOST_ADDRESS=0.0.0.0:8080
+          - FLINBUSML_URL=http://localhost:8081
