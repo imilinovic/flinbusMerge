@@ -1,6 +1,6 @@
 import psycopg2
 
-from db_util import DBUtil
+from utils.db_util import DBUtil
 from models.profile import Profile
 
 

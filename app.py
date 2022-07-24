@@ -1,15 +1,16 @@
-from typing import Optional
-
 import psycopg2
 from flask import Flask, request
 
+from api.input_params.image_input import ImageInput
 from api.input_params.login_input import LoginInput
 from api.input_params.register_input import RegisterInput
+from api.response_params.image_response import ImageResponse
 from api.response_params.login_response import LoginResponse
 from api.response_params.register_response import RegisterResponse
-from db_util import DBUtil
 from models.profile import Profile
-from random_util import gen_id
+from utils.db_util import DBUtil
+from utils.random_util import gen_id
+from utils.validation_util import validate_token
 
 app = Flask(__name__)
 db = DBUtil()
@@ -54,3 +55,16 @@ def login():
     db.update(user_profile)
 
     return LoginResponse(success=True, apiToken=user_profile.profileToken).dict()
+
+
+@app.route("/api/image", methods=["POST"])
+def image():
+    params = ImageInput(**request.get_json())
+
+    if not validate_token(params.apiToken):
+        return ImageResponse(success=False).dict()
+
+    # TODO: ML API call
+    received_image = "blablabase64"
+
+    return ImageResponse(success=True, image=received_image).dict()
