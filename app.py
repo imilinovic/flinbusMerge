@@ -63,8 +63,8 @@ def login():
 def image():
     params = ImageInput(**request.get_json())
 
-    if not validate_token(params.apiToken):
-        return ImageResponse(success=False).dict()
+#    if not validate_token(params.apiToken):
+#        return ImageResponse(success=False).dict()
 
     res = requests.post(settings.FLINBUSML_URL + '/yolo', json={"img": params.image})
     labeled_image = res.json()['img']
