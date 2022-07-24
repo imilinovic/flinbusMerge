@@ -30,7 +30,7 @@ def register():
         profileSurname=params.surname,
         profilePoints=0,
         profileTotalPoints=0,
-        profileToken="",
+        profileToken=gen_id(),
     )
 
     try:
