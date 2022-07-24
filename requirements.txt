@@ -1,0 +1,7 @@
+wheel
+flask
+gunicorn
+psycopg2
+environs
+pydantic
+requests
