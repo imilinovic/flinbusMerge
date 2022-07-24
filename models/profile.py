@@ -10,3 +10,7 @@ class Profile(DBModel):
     profileToken: str
     profileName: str
     profileSurname: str
+
+    @classmethod
+    def primary_key(cls) -> str:
+        return "profileUsername"

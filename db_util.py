@@ -60,8 +60,12 @@ class DBUtil:
 
         values = ", ".join([f"{field_key} = '{field_value}'" for field_key, field_value in value.dict().items()])
 
-        equality_checks = [f"{key} = '{value}'" for key, value in filter_opts.items()]
-        where_section = " AND ".join(equality_checks)
+        if filter_opts:
+            equality_checks = [f"{key} = '{value}'" for key, value in filter_opts.items()]
+            where_section = " AND ".join(equality_checks)
+        else:
+            primary_key = value.primary_key()
+            where_section = f"{primary_key} = '{getattr(value, primary_key)}'"
 
         query = f"UPDATE {table} SET {values} WHERE {where_section};"
 
