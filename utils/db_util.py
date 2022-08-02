@@ -47,7 +47,15 @@ class DBUtil:
     def insert(self, value: T) -> None:
         table = value.__class__.__name__.lower()
 
-        values = ", ".join([f"'{field_value}'" for field_value in value.dict().values()])
+        values = []
+
+        for field_value in value.dict().values():
+            if str(field_value).lower() != "default":
+                values.append(f"'{field_value}'")
+            else:
+                values.append("DEFAULT")
+
+        values = ", ".join(values)
 
         query = f"INSERT INTO {table} VALUES ({values});"
 

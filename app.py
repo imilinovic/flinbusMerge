@@ -1,3 +1,5 @@
+import logging
+
 import psycopg2
 import requests
 from flask import Flask, request
@@ -16,6 +18,8 @@ from utils.validation_util import validate_token
 
 app = Flask(__name__)
 db = DBUtil()
+logging.basicConfig(level=logging.NOTSET)
+logger = logging.getLogger("FlinbusMerge")
 
 
 @app.route("/api/register", methods=["POST"])
@@ -39,6 +43,8 @@ def register():
         db.rollback()
         return RegisterResponse(success=False).dict()
 
+    logger.info(f"Registering user {params.username}.")
+
     return RegisterResponse(success=True).dict()
 
 
@@ -56,6 +62,8 @@ def login():
 
     db.update(user_profile)
 
+    logger.info(f"Logging in user {params.username} with token {user_profile.profileToken}.")
+
     return LoginResponse(success=True, apiToken=user_profile.profileToken).dict()
 
 
@@ -63,10 +71,12 @@ def login():
 def image():
     params = ImageInput(**request.get_json())
 
-#    if not validate_token(params.apiToken):
-#        return ImageResponse(success=False).dict()
+    if not validate_token(params.apiToken):
+        return ImageResponse(success=False).dict()
 
     res = requests.post(settings.FLINBUSML_URL + '/yolo', json={"img": params.image})
     labeled_image = res.json()['img']
+
+    logger.info(f"Processing image from user with token {params.apiToken}.")
 
     return ImageResponse(success=True, image=labeled_image).dict()
